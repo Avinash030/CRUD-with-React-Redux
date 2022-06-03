@@ -1,0 +1,38 @@
+.mrg-top-10{
+margin-top: 10px;
+}
+.margin-btm-10{
+    margin-bottom: 10px;
+}
+table {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+tbody {
+    display: block;
+    overflow-y: auto;
+    height: 350px;
+}
+
+tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+.welcome-color{
+    color: #175dde;
+    background: #0dcaf073;
+}
+.no-data-found{
+    color: red;
+    margin-top: 5px !important;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green !important;
+    padding: 10px;
+}
+.float-right{
+    float: right;
+}
