@@ -21,7 +21,9 @@ export default class User extends React.Component{
             isUpdate:false,
             showModel:false,
             search:"",
-            allUserData:[]
+            allUserData:[],
+            mobileErrMsg:"",
+            nameErrMsg:""
         }
     }
     componentDidMount(){
@@ -59,8 +61,9 @@ export default class User extends React.Component{
             name:name,
             mobile:mobile
         }
-        if(name && mobile)
+        if(this.validation()){
         this.props.saveUserData(userData)
+        }
     }
     delete=(user)=>{
         let cnfm = window.confirm("Are You Sure !")
@@ -83,27 +86,63 @@ export default class User extends React.Component{
             mobile:this.state.mobile,
             userId:this.state.id
         }
-       this.props.saveUserData(userData)
+        if(this.validation()){
+            this.props.saveUserData(userData)
+        }
     }
     handleInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})
     }
     handleSearch=(e)=>{
+        let inptData = e.target.value
+        let inptType = typeof inptData
+        let inptValue
+          if(inptType === "string"){
+            inptValue = inptData.toLowerCase()
+          }else{
+              inptValue = inptData
+          }
         this.setState({search:e.target.value})
         let allUser = this.state.allData
-      let filteredData  = allUser.filter(x=>x.name.includes(e.target.value) || x.mobile.includes(e.target.value))
-        console.log(filteredData,"???")
+      let filteredData  = allUser.filter(x=>x.name.toLowerCase().includes(inptValue) || x.mobile.includes(inptValue))
         this.setState({allUserData:filteredData})
     }
     handleClose = () => {
-        this.setState({showModel:false})
-    };
+        this.setState({isUpdate:false,name:"",mobile:"",id:"",showModel:false,nameErrMsg:"",mobileErrMsg:""})
+    }
     handleShow = () => {
         this.setState({showModel:true})
-    };
+    }
+    validation=()=>{
+        const {name,mobile} = this.state
+        let isNameActive=false,isMobileActive=false
+        this.setState({nameErrMsg:"",mobileErrMsg:""})
+        if(!name){
+            this.setState({nameErrMsg:"Please Enter Name"})
+            isNameActive=false
+        } else if(name.length < 3){
+            this.setState({nameErrMsg:"Name Should be minimum 3 Charactor"})
+            isNameActive=false
+        } else{
+            this.setState({nameErrMsg:""})
+            isNameActive = true
+        }
+        if(!mobile){
+            this.setState({mobileErrMsg:"Please Enter Mobile No."})
+            isMobileActive = false
+        } else if(mobile.toString().length < 10 || mobile.toString().length > 10){
+            this.setState({mobileErrMsg:"Mobile No. Should be 10 digits"})
+            isMobileActive = false
+        } else{
+            this.setState({mobileErrMsg:""})
+            isMobileActive = true
+        }
+        if(isNameActive && isMobileActive)
+        return true
+    }
 
     render(){
-        const {allUserData,isUpdate,showModel} = this.state
+        const {allUserData,isUpdate,showModel,mobileErrMsg,nameErrMsg} = this.state
         return(
            <Container>
             <h2 className="text-center welcome-color">Welcome User</h2>
@@ -120,11 +159,17 @@ export default class User extends React.Component{
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" onChange={this.handleInput} name="name" value={this.state.name} placeholder="Enter name"  />
             </Form.Group>
+            <Form.Text className="text-error">
+               {nameErrMsg}
+            </Form.Text>
 
             <Form.Group className="mb-3">
                 <Form.Label>Mobile No.</Form.Label>
                 <Form.Control type="number" maxLength={10} onChange={this.handleInput} name="mobile" value={this.state.mobile} placeholder="Enter mobile no." />
             </Form.Group>
+            <Form.Text className="text-error">
+                {mobileErrMsg}
+            </Form.Text>
             <div className="col-md-12 text-center">
             {!isUpdate ?
                 <Button variant="primary" onClick={this.save}>Save user</Button>
@@ -140,7 +185,7 @@ export default class User extends React.Component{
                 </Button>
                 </Modal.Footer>
             </Modal>
-            <input type="text" onChange={this.handleSearch} name="search" value={this.state.search} placeholder="Search with name/mobile"  />
+            {allUserData.length ? <input type="text" onChange={this.handleSearch} name="search" value={this.state.search} placeholder="Search with name/mobile"  />:""}
             <Table className="mrg-top-10" striped bordered size="sm">
             <thead>
                 <tr>

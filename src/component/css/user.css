@@ -36,3 +36,6 @@ tr {
 .float-right{
     float: right;
 }
+.text-error{
+    color: red !important;
+}
