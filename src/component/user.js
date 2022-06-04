@@ -142,7 +142,7 @@ export default class User extends React.Component{
     }
 
     render(){
-        const {allUserData,isUpdate,showModel,mobileErrMsg,nameErrMsg} = this.state
+        const {allUserData,allData,isUpdate,showModel,mobileErrMsg,nameErrMsg} = this.state
         return(
            <Container>
             <h2 className="text-center welcome-color">Welcome User</h2>
@@ -185,7 +185,7 @@ export default class User extends React.Component{
                 </Button>
                 </Modal.Footer>
             </Modal>
-            {allUserData.length ? <input type="text" onChange={this.handleSearch} name="search" value={this.state.search} placeholder="Search with name/mobile"  />:""}
+            {allData.length ? <input type="text" onChange={this.handleSearch} name="search" value={this.state.search} placeholder="Search with name/mobile"  />:""}
             <Table className="mrg-top-10" striped bordered size="sm">
             <thead>
                 <tr>
