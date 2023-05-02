@@ -4,7 +4,7 @@ import { Button, Table} from 'react-bootstrap';
 export const UserTable=({allUserData,allData,handleSearch,search,edit,deleteUser})=>{
 return(
     <>
-    {allData.length ? <input type="text" onChange={handleSearch} name="search" value={search} placeholder="Search with name/mobile"  />:""}
+    {allData && allData.length ? <input type="text" onChange={handleSearch} name="search" value={search} placeholder="Search with name/mobile"  />:""}
             <Table className="mrg-top-10" striped bordered size="sm">
             <thead>
                 <tr>
@@ -25,6 +25,6 @@ return(
             ): <h4 className="text-center no-data-found">No data found</h4>}
             </tbody>
             </Table>
-    </>
+            </>
 )
 }
